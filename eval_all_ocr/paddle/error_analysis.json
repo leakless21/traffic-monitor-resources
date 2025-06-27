@@ -1,0 +1,827 @@
+{
+  "common_substitutions": {
+    "6->0": 4,
+    "0->U": 17,
+    "D->0": 21,
+    "3->B": 4,
+    "0->D": 1,
+    "2->N": 1,
+    "D->5": 1,
+    "3->E": 1,
+    "0->1": 4,
+    "4->L": 2,
+    "A->3": 2,
+    "3->5": 4,
+    "5->8": 1,
+    "8->9": 1,
+    "5->7": 1,
+    "2->5": 1,
+    "0->2": 3,
+    "4->0": 2,
+    "0->3": 5,
+    "3->0": 4,
+    "0->F": 1,
+    "F->5": 4,
+    "5->2": 1,
+    "2->0": 1,
+    "0->4": 2,
+    "G->6": 5,
+    "5->0": 3,
+    "3->G": 1,
+    "Z->2": 5,
+    "9->1": 2,
+    "2->9": 2,
+    "6->2": 1,
+    "4->6": 2,
+    "5->4": 3,
+    "Z->7": 2,
+    "H->1": 1,
+    "1->H": 1,
+    "5->1": 2,
+    "0->5": 1,
+    "7->0": 3,
+    "9->7": 2,
+    "9->3": 1,
+    "8->2": 1,
+    "A->8": 2,
+    "9->8": 2,
+    "D->U": 1,
+    "3->8": 2,
+    "A->4": 1,
+    "1->2": 1,
+    "9->2": 2,
+    "8->0": 3,
+    "9->5": 3,
+    "3->2": 2,
+    "M->3": 1,
+    "3->J": 1,
+    "2->Z": 3,
+    "9->0": 4,
+    "5->9": 3,
+    "6->5": 2,
+    "1->0": 5,
+    "4->9": 2,
+    "A->2": 2,
+    "0->9": 7,
+    "3->F": 1,
+    "2->6": 2,
+    "6->7": 2,
+    "2->3": 2,
+    "7->9": 1,
+    "U->0": 4,
+    "2->A": 1,
+    "9->N": 1,
+    "A->M": 1,
+    "4->3": 1,
+    "4->1": 4,
+    "8->5": 2,
+    "0->8": 2,
+    "9->J": 1,
+    "3->7": 2,
+    "G->2": 2,
+    "F->1": 1,
+    "5->6": 1,
+    "0->7": 2,
+    "1->3": 1,
+    "7->F": 1,
+    "F->话": 1,
+    "F->R": 2,
+    "7->2": 3,
+    "M->H": 2,
+    "4->2": 1,
+    "8->B": 2,
+    "B->8": 1,
+    "U->2": 1,
+    "6->3": 1,
+    "1->6": 1,
+    "N->H": 1,
+    "6->E": 1,
+    "A->1": 1,
+    "C->L": 1,
+    "9->Y": 1,
+    "T->1": 8,
+    "4->W": 2,
+    "M->7": 2,
+    "1->Q": 1,
+    "Q->V": 1,
+    "V->W": 1,
+    "W->1": 2,
+    "1->G": 1,
+    "N->L": 1,
+    "1->N": 1,
+    "9->G": 1,
+    "5->W": 2,
+    "V->A": 1,
+    "M->5": 2,
+    "0->6": 1,
+    "M->W": 1,
+    "D->L": 1,
+    "N->8": 1,
+    "1->Z": 3,
+    "7->L": 1,
+    "8->N": 1,
+    "L->X": 1,
+    "1->L": 2,
+    "Q->L": 2,
+    "1->5": 2,
+    "X->7": 1,
+    "L->A": 1,
+    "4->7": 2,
+    "V->1": 1,
+    "6->Z": 1,
+    "5->X": 1,
+    "X->5": 1,
+    "Z->9": 1,
+    "X->H": 1,
+    "W->M": 3,
+    "H->X": 1,
+    "Q->0": 2,
+    "Z->5": 3,
+    "5->Z": 3,
+    "Z->1": 2,
+    "4->N": 1,
+    "Q->1": 1,
+    "N->7": 1,
+    "X->8": 1,
+    "B->X": 1,
+    "9->X": 1,
+    "V->X": 1,
+    "X->A": 1,
+    "K->6": 1,
+    "J->7": 1,
+    "U->1": 1,
+    "H->6": 1,
+    "9->H": 1,
+    "W->Z": 1,
+    "2->M": 1,
+    "1->M": 1,
+    "E->0": 1,
+    "D->3": 1,
+    "Z->6": 1,
+    "K->X": 1,
+    "Z->X": 1,
+    "X->Z": 1,
+    "1->J": 1,
+    "L->0": 1,
+    "A->5": 1,
+    "6->9": 1,
+    "5->V": 1,
+    "E->1": 1,
+    "1->E": 1,
+    "E->T": 1,
+    "M->L": 1,
+    "5->L": 1,
+    "1->W": 1,
+    "9->K": 1,
+    "B->9": 1,
+    "0->B": 1
+  },
+  "common_insertions": {},
+  "common_deletions": {},
+  "error_examples": [
+    {
+      "image_path": "CarTGMTCrop_AQUA2_0009_checkoutex_2020-11-2-7-28oqoVqSb5nt.jpg",
+      "predicted": "56S0009",
+      "ground_truth": "56S6009",
+      "cer": 0.14285714285714285,
+      "confidence": 0.989,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 1
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA2_05684_checkin_2020-11-1-15-24S9e2ulrvsu.jpg",
+      "predicted": "3UA05684",
+      "ground_truth": "30A05684",
+      "cer": 0.125,
+      "confidence": 0.9615,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 1
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA2_05685_checkin_2020-10-26-15-31iYBCmaQio4.jpg",
+      "predicted": "29005685",
+      "ground_truth": "29D05685",
+      "cer": 0.125,
+      "confidence": 0.9381,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 1
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA2_08931_checkin_2020-10-26-8-32Eq872WszPJ.jpg",
+      "predicted": "BDF08931",
+      "ground_truth": "30F08931",
+      "cer": 0.25,
+      "confidence": 0.924,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 2
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA2_09566_checkin_2020-10-25-8-462Qk2ihk4Xw.jpg",
+      "predicted": "n95",
+      "ground_truth": "29D09566",
+      "cer": 0.75,
+      "confidence": 0.7356,
+      "error_counts": {
+        "insertion": 5,
+        "deletion": 0,
+        "substitution": 1
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA2_18976_checkin_2020-10-29-13-57uaOYxAfF1x.jpg",
+      "predicted": "EIF18976",
+      "ground_truth": "3OF18976",
+      "cer": 0.25,
+      "confidence": 0.7946,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 2
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA2_32665_checkin_2020-10-26-10-5J1mk7OxRh3.jpg",
+      "predicted": "B0F32665",
+      "ground_truth": "30F32665",
+      "cer": 0.125,
+      "confidence": 0.8535,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 1
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA2_35899_checkin_2020-10-31-16-49VIp06Wk1g2.jpg",
+      "predicted": "BL35899",
+      "ground_truth": "34A35899",
+      "cer": 0.375,
+      "confidence": 0.726,
+      "error_counts": {
+        "insertion": 1,
+        "deletion": 0,
+        "substitution": 2
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA2_5204_checkout_2020-10-23-9-461hL90sRDAi.jpg",
+      "predicted": "30F75204",
+      "ground_truth": "30F5204",
+      "cer": 0.14285714285714285,
+      "confidence": 0.8993,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 1,
+        "substitution": 0
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA2_5204_checkout_2020-10-23-9-57HyxGJIMyGO.jpg",
+      "predicted": "30F5204",
+      "ground_truth": "030F5204",
+      "cer": 0.125,
+      "confidence": 0.9916,
+      "error_counts": {
+        "insertion": 1,
+        "deletion": 0,
+        "substitution": 0
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA2_52911_checkin_2020-10-25-8-52w2paLJIm01.jpg",
+      "predicted": "51652911",
+      "ground_truth": "51G52911",
+      "cer": 0.125,
+      "confidence": 0.97,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 1
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA2_58226_checkin_2020-10-29-16-995IamtFWvF.jpg",
+      "predicted": "3OE082",
+      "ground_truth": "30E58226",
+      "cer": 0.375,
+      "confidence": 0.8296,
+      "error_counts": {
+        "insertion": 2,
+        "deletion": 0,
+        "substitution": 1
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA2_61153_checkin_2020-11-1-8-33cFensNOshu.jpg",
+      "predicted": "3UA61153",
+      "ground_truth": "30A61153",
+      "cer": 0.125,
+      "confidence": 0.9846,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 1
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA2_61153_checkin_2020-11-1-8-33fv6MTLn0w0.jpg",
+      "predicted": "3UA61153",
+      "ground_truth": "30A61153",
+      "cer": 0.125,
+      "confidence": 0.9221,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 1
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA2_86044_checkin_2020-10-28-16-51OVjs42oqUz.jpg",
+      "predicted": "G0E86044",
+      "ground_truth": "30E86044",
+      "cer": 0.125,
+      "confidence": 0.9078,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 1
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA2_8657_checkin_2020-11-1-12-24WfGNnu5EKj.jpg",
+      "predicted": "3028657",
+      "ground_truth": "30Z8657",
+      "cer": 0.14285714285714285,
+      "confidence": 0.9111,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 1
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA2_92645_checkin_2020-10-24-9-4wuaOCV2CFL.jpg",
+      "predicted": "30A192645",
+      "ground_truth": "30A92645",
+      "cer": 0.125,
+      "confidence": 0.9599,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 1,
+        "substitution": 0
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA2_9986_checkin_2020-10-31-10-466RGaQRMDJW.jpg",
+      "predicted": "2979986",
+      "ground_truth": "29Z9986",
+      "cer": 0.14285714285714285,
+      "confidence": 0.8539,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 1
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA4_03523_checkin_2020-10-25-15-24sBLha486qp.jpg",
+      "predicted": "0353",
+      "ground_truth": "30F03523",
+      "cer": 0.5,
+      "confidence": 0.5696,
+      "error_counts": {
+        "insertion": 4,
+        "deletion": 0,
+        "substitution": 0
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA4_03523_checkin_2020-10-25-15-29vGvhUPuMa0.jpg",
+      "predicted": "3UF03523",
+      "ground_truth": "30F03523",
+      "cer": 0.125,
+      "confidence": 0.9004,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 1
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA4_03523_checkoutex_2020-10-25-15-2684I4NRektd.jpg",
+      "predicted": "0353",
+      "ground_truth": "30F03523",
+      "cer": 0.5,
+      "confidence": 0.5696,
+      "error_counts": {
+        "insertion": 4,
+        "deletion": 0,
+        "substitution": 0
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA4_13864_checkin_2020-10-25-15-16C5G081f3uV.jpg",
+      "predicted": "89A138",
+      "ground_truth": "89A13864",
+      "cer": 0.25,
+      "confidence": 0.9952,
+      "error_counts": {
+        "insertion": 2,
+        "deletion": 0,
+        "substitution": 0
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA4_2H15079_checkin_2020-10-22-13-29qqfjp143Q9.jpg",
+      "predicted": "291H15079",
+      "ground_truth": "29H15079",
+      "cer": 0.125,
+      "confidence": 0.8973,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 1,
+        "substitution": 0
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA4_32802_checkin_2020-10-22-8-14n6axlmCzxv.jpg",
+      "predicted": "32802",
+      "ground_truth": "98A32802",
+      "cer": 0.375,
+      "confidence": 0.9958,
+      "error_counts": {
+        "insertion": 3,
+        "deletion": 0,
+        "substitution": 0
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA4_71193_checkin_2020-11-1-16-46SaQDa_pYYv.jpg",
+      "predicted": "3UA71103",
+      "ground_truth": "30A71103",
+      "cer": 0.125,
+      "confidence": 0.9359,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 1
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA4__checkout_2020-10-25-15-30RDy23LXAKw.jpg",
+      "predicted": "3UF03523",
+      "ground_truth": "30F03523",
+      "cer": 0.125,
+      "confidence": 0.9004,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 1
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA4_null_checkoutex_2020-10-25-14-33QaWriceEuX.jpg",
+      "predicted": "30A82957",
+      "ground_truth": "30A92957",
+      "cer": 0.125,
+      "confidence": 0.9154,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 1
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA5_00082_checkin_2020-11-2-17-22WNUwb21yf4.jpg",
+      "predicted": "24U00082",
+      "ground_truth": "24D00082",
+      "cer": 0.125,
+      "confidence": 0.9162,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 1
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA5_00567_checkin_2020-11-2-10-33zfrAPN14LL.jpg",
+      "predicted": "3UG00567",
+      "ground_truth": "30G00567",
+      "cer": 0.125,
+      "confidence": 0.9962,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 1
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA5_0064_checkin_2020-10-23-15-1578RGxXSSoA.jpg",
+      "predicted": "26A00",
+      "ground_truth": "26A00164",
+      "cer": 0.375,
+      "confidence": 0.9702,
+      "error_counts": {
+        "insertion": 3,
+        "deletion": 0,
+        "substitution": 0
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA5_01799_checkin_2020-10-23-17-14pdD8jVvzl8.jpg",
+      "predicted": "29001799",
+      "ground_truth": "29D01799",
+      "cer": 0.125,
+      "confidence": 0.936,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 1
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA5_03916_checkin_2020-10-30-21-25oMyS7Vd7H7.jpg",
+      "predicted": "80G03916",
+      "ground_truth": "30G03916",
+      "cer": 0.125,
+      "confidence": 0.9539,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 1
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA5_09290_checkin_2020-10-22-9-1fILrukU6Cv.jpg",
+      "predicted": "14409290",
+      "ground_truth": "14A09290",
+      "cer": 0.125,
+      "confidence": 0.9065,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 1
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA5_09566_checkin_2020-10-22-8-36zhkfoto7iM.jpg",
+      "predicted": "29009566",
+      "ground_truth": "29D09566",
+      "cer": 0.125,
+      "confidence": 0.9493,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 1
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA5_09566_checkin_2020-10-22-8-40ha5sQphIlE.jpg",
+      "predicted": "29009566",
+      "ground_truth": "29D09566",
+      "cer": 0.125,
+      "confidence": 0.9631,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 1
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA5_09566_checkin_2020-10-22-8-44IP7YxmpunS.jpg",
+      "predicted": "29009566",
+      "ground_truth": "29D09566",
+      "cer": 0.125,
+      "confidence": 0.9459,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 1
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA5_09566_checkin_2020-10-23-17-14LKq0RI2Rbg.jpg",
+      "predicted": "29009566",
+      "ground_truth": "29D09566",
+      "cer": 0.125,
+      "confidence": 0.9738,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 1
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA5_09566_checkout_2020-10-22-8-349mgsOsF2mq.jpg",
+      "predicted": "29009566",
+      "ground_truth": "29D09566",
+      "cer": 0.125,
+      "confidence": 0.969,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 1
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA5_09566_checkout_2020-10-22-8-42Jd5PVgTBfK.jpg",
+      "predicted": "29009566",
+      "ground_truth": "29D09566",
+      "cer": 0.125,
+      "confidence": 0.9631,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 1
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA5_11292_checkin_2020-10-27-21-13FX_QefRG8U.jpg",
+      "predicted": "30F1292",
+      "ground_truth": "30F11292",
+      "cer": 0.125,
+      "confidence": 0.9732,
+      "error_counts": {
+        "insertion": 1,
+        "deletion": 0,
+        "substitution": 0
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA5_12433_checkin_2020-10-28-19-597uRMamXP7N.jpg",
+      "predicted": "OSA12433",
+      "ground_truth": "89A12433",
+      "cer": 0.25,
+      "confidence": 0.9559,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 2
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA5_12433_checkout_2020-10-28-20-54rBsUFzm0KS.jpg",
+      "predicted": "OSA12433",
+      "ground_truth": "89A12433",
+      "cer": 0.25,
+      "confidence": 0.8826,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 2
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA5_25885_checkin_2020-11-1-9-48KuQo5nuU6W.jpg",
+      "predicted": "29A25885VIEVIP",
+      "ground_truth": "29A25885",
+      "cer": 0.75,
+      "confidence": 0.9828,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 6,
+        "substitution": 0
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA5_32857_checkin_2020-10-28-20-25Co0mDk00rn.jpg",
+      "predicted": "3UA32867",
+      "ground_truth": "30A32867",
+      "cer": 0.125,
+      "confidence": 0.9547,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 1
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA5_32867_checkin_2020-10-29-9-23dnUpMehRiE.jpg",
+      "predicted": "3UA32867",
+      "ground_truth": "30A32867",
+      "cer": 0.125,
+      "confidence": 0.9637,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 1
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA5_4253_checkin_2020-10-19-10-9lEnTQg5OrO.jpg",
+      "predicted": "203",
+      "ground_truth": "30M4253",
+      "cer": 0.7142857142857143,
+      "confidence": 0.5664,
+      "error_counts": {
+        "insertion": 4,
+        "deletion": 0,
+        "substitution": 1
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA5_61153_checkin_2020-10-29-19-36jM4eWucUPr.jpg",
+      "predicted": "JUA61153",
+      "ground_truth": "30A61153",
+      "cer": 0.25,
+      "confidence": 0.9514,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 2
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA5_73520_checkin_2020-11-1-9-47E1WzjZ4euc.jpg",
+      "predicted": "ZSA73570",
+      "ground_truth": "29A73570",
+      "cer": 0.25,
+      "confidence": 0.9698,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 2
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA5_9566_checkin_2020-10-23-9-44jXLRScmjjt.jpg",
+      "predicted": "29D109566",
+      "ground_truth": "29D09566",
+      "cer": 0.125,
+      "confidence": 0.9619,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 1,
+        "substitution": 0
+      }
+    },
+    {
+      "image_path": "CarTGMTCrop_AQUA5_96308_checkout_2020-10-26-20-364Zp8brrT2l.jpg",
+      "predicted": "3UA96308",
+      "ground_truth": "30A96308",
+      "cer": 0.125,
+      "confidence": 0.9914,
+      "error_counts": {
+        "insertion": 0,
+        "deletion": 0,
+        "substitution": 1
+      }
+    }
+  ],
+  "by_plate_length": {
+    "7 chars": {
+      "mean_cer": 0.026410564225690276,
+      "std_cer": 0.10872798871007901,
+      "count": 238
+    },
+    "8 chars": {
+      "mean_cer": 0.022816593886462882,
+      "std_cer": 0.09070101314637176,
+      "count": 1145
+    },
+    "9 chars": {
+      "mean_cer": 0.019762845849802372,
+      "std_cer": 0.06363937928941231,
+      "count": 253
+    }
+  },
+  "by_confidence": {
+    "0.9": {
+      "mean_cer": 0.01743277752741475,
+      "std_cer": 0.07437107619011825,
+      "count": 1585
+    },
+    "0.7": {
+      "mean_cer": 0.3333333333333333,
+      "std_cer": 0.21245914639969937,
+      "count": 6
+    },
+    "0.8": {
+      "mean_cer": 0.12663690476190476,
+      "std_cer": 0.21101444087512597,
+      "count": 40
+    },
+    "0.5": {
+      "mean_cer": 0.5714285714285715,
+      "std_cer": 0.10101525445522108,
+      "count": 3
+    },
+    "0.6": {
+      "mean_cer": 0.5,
+      "std_cer": 0.0,
+      "count": 2
+    }
+  }
+}

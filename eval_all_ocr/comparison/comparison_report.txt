@@ -1,0 +1,42 @@
+OCR ENGINES COMPARISON REPORT
+============================================================
+
+SUMMARY COMPARISON
+------------------------------
+Engine          Accuracy   CER      F1       Latency(ms)  Throughput
+-----------------------------------------------------------------
+fast-plate-ocr  0.676      0.071    0.676    3.2          308       
+PPOCRv5         0.905      0.023    0.905    13.3         75        
+
+DETAILED METRICS
+------------------------------
+
+FAST-PLATE-OCR
+  Plate Accuracy: 0.6755
+  Character Error Rate: 0.0711
+  Precision: 0.6755
+  Recall: 0.6755
+  F1 Score: 0.6755
+  Average Latency: 3.25ms
+  Throughput: 307.7 plates/sec
+  Total Samples: 1652
+  Correct Detections: 1116
+  Character Errors: 952
+
+PPOCRV5
+  Plate Accuracy: 0.9053
+  Character Error Rate: 0.0229
+  Precision: 0.9053
+  Recall: 0.9053
+  F1 Score: 0.9053
+  Average Latency: 13.29ms
+  Throughput: 75.2 plates/sec
+  Total Samples: 1636
+  Correct Detections: 1481
+  Character Errors: 298
+
+BEST PERFORMERS
+--------------------
+Best Accuracy: PPOCRv5 (0.905)
+Best Speed: fast-plate-ocr (308 plates/sec)
+Lowest CER: PPOCRv5 (0.023)
