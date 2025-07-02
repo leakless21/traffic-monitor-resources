@@ -1,0 +1,20 @@
+
+Benchmarks complete for /kaggle/working/runs/detect/train/weights/best.pt on /kaggle/working/datasets/License-Plate-Recognition-5/data.yaml at imgsz=640 (789.93s)
+Benchmarks legend:  - ✅ Success  - ❎ Export passed but validation failed  - ❌️ Export failed
+                   Format Status❔  Size (MB) metrics/mAP50-95(B) Inference time (ms/im)    FPS
+0                 PyTorch       ✅        5.2              0.7217                  13.09  76.39
+1             TorchScript       ✅       10.4              0.7144                   6.71  149.1
+2                    ONNX       ✅        5.1               0.713                  10.92  91.55
+3                OpenVINO       ❌        0.0                   -                      -      -
+4                TensorRT       ✅        8.7              0.7145                   2.68  373.0
+5                  CoreML       ❌        0.0                   -                      -      -
+6   TensorFlow SavedModel       ❌        0.0                   -                      -      -
+7     TensorFlow GraphDef       ❌        0.0                   -                      -      -
+8         TensorFlow Lite       ❌        0.0                   -                      -      -
+9     TensorFlow Edge TPU       ❌        0.0                   -                      -      -
+10          TensorFlow.js       ❌        0.0                   -                      -      -
+11           PaddlePaddle       ❌        0.0                   -                      -      -
+12                    MNN       ✅        5.0              0.7144                   73.8  13.55
+13                   NCNN       ✅        5.1              0.7146                  69.05  14.48
+14                    IMX       ❌        0.0                   -                      -      -
+15                   RKNN       ❌        0.0                   -                      -      -
