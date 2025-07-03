@@ -1,0 +1,25 @@
+Model,Detection_Task,Export_Format,Size_MB,mAP50_95,Latency_ms,FPS,Precision,Optimization_Level,Hardware_Requirements,Deployment_Complexity,Inference_Backend,FPS_Speedup_vs_PyTorch,Latency_Reduction_vs_PyTorch
+YOLO11n,License Plate,PyTorch,5.2,0.722,13.09,76.39,FP32,None,CPU/GPU,Easy,PyTorch,1.0,1.0
+YOLO11n,License Plate,ONNX,5.1,0.713,10.92,91.55,FP32/FP16,Graph optimization,CPU/GPU/NPU,Medium,ONNXRuntime,1.198,1.199
+YOLO11n,License Plate,TensorRT,8.7,0.714,2.68,373.0,FP32/FP16/INT8,High,NVIDIA GPU,Medium,TensorRT,4.883,4.884
+YOLOv10n,License Plate,PyTorch,5.5,0.72,13.78,72.59,FP32,None,CPU/GPU,Easy,PyTorch,1.0,1.0
+YOLOv10n,License Plate,ONNX,4.5,0.712,11.54,86.63,FP32/FP16,Graph optimization,CPU/GPU/NPU,Medium,ONNXRuntime,1.193,1.194
+YOLOv10n,License Plate,TensorRT,7.8,0.713,2.27,441.29,FP32/FP16/INT8,High,NVIDIA GPU,Medium,TensorRT,6.079,6.07
+YOLOv5u,License Plate,PyTorch,5.1,0.712,11.12,89.89,FP32,None,CPU/GPU,Easy,PyTorch,1.0,1.0
+YOLOv5u,License Plate,ONNX,4.9,0.706,6.99,143.1,FP32/FP16,Graph optimization,CPU/GPU/NPU,Medium,ONNXRuntime,1.592,1.591
+YOLOv5u,License Plate,TensorRT,7.5,0.706,2.52,395.94,FP32/FP16/INT8,High,NVIDIA GPU,Medium,TensorRT,4.405,4.413
+YOLOv8n,License Plate,PyTorch,6.0,0.718,10.51,95.12,FP32,None,CPU/GPU,Easy,PyTorch,1.0,1.0
+YOLOv8n,License Plate,ONNX,5.9,0.709,10.82,92.44,FP32/FP16,Graph optimization,CPU/GPU/NPU,Medium,ONNXRuntime,0.972,0.971
+YOLOv8n,License Plate,TensorRT,8.2,0.709,2.63,379.68,FP32/FP16/INT8,High,NVIDIA GPU,Medium,TensorRT,3.992,3.996
+YOLO11n,Vehicles,PyTorch,5.2,0.639,15.35,65.13,FP32,None,CPU/GPU,Easy,PyTorch,1.0,1.0
+YOLO11n,Vehicles,ONNX,5.1,0.628,13.26,75.42,FP32/FP16,Graph optimization,CPU/GPU/NPU,Medium,ONNXRuntime,1.158,1.158
+YOLO11n,Vehicles,TensorRT,8.6,0.628,3.2,312.13,FP32/FP16/INT8,High,NVIDIA GPU,Medium,TensorRT,4.792,4.797
+YOLOv10n,Vehicles,PyTorch,5.5,0.64,14.03,71.27,FP32,None,CPU/GPU,Easy,PyTorch,1.0,1.0
+YOLOv10n,Vehicles,ONNX,4.5,0.63,12.44,80.38,FP32/FP16,Graph optimization,CPU/GPU/NPU,Medium,ONNXRuntime,1.128,1.128
+YOLOv10n,Vehicles,TensorRT,7.6,0.63,2.74,364.66,FP32/FP16/INT8,High,NVIDIA GPU,Medium,TensorRT,5.117,5.12
+YOLOv5u,Vehicles,PyTorch,5.0,0.632,13.87,72.12,FP32,None,CPU/GPU,Easy,PyTorch,1.0,1.0
+YOLOv5u,Vehicles,ONNX,4.9,0.619,9.4,106.4,FP32/FP16,Graph optimization,CPU/GPU/NPU,Medium,ONNXRuntime,1.475,1.476
+YOLOv5u,Vehicles,TensorRT,7.8,0.618,2.59,386.43,FP32/FP16/INT8,High,NVIDIA GPU,Medium,TensorRT,5.358,5.355
+YOLOv8n,Vehicles,PyTorch,6.0,0.64,13.09,76.37,FP32,None,CPU/GPU,Easy,PyTorch,1.0,1.0
+YOLOv8n,Vehicles,ONNX,5.9,0.632,13.64,73.29,FP32/FP16,Graph optimization,CPU/GPU/NPU,Medium,ONNXRuntime,0.96,0.96
+YOLOv8n,Vehicles,TensorRT,8.6,0.632,2.97,336.35,FP32/FP16/INT8,High,NVIDIA GPU,Medium,TensorRT,4.404,4.407

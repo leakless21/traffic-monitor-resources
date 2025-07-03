@@ -1,0 +1,20 @@
+
+Benchmarks complete for /kaggle/working/runs/detect/train/weights/best.pt on /kaggle/working/datasets/traffic-flow-test1-bicycle-vehicles-2/data.yaml at imgsz=640 (514.79s)
+Benchmarks legend:  - ✅ Success  - ❎ Export passed but validation failed  - ❌️ Export failed
+                   Format Status❔  Size (MB) metrics/mAP50-95(B) Inference time (ms/im)     FPS
+0                 PyTorch       ✅        5.2              0.6392                  15.35   65.13
+1             TorchScript       ✅       10.4              0.6301                   7.67  130.29
+2                    ONNX       ✅        5.1              0.6275                  13.26   75.42
+3                OpenVINO       ❌        0.0                   -                      -       -
+4                TensorRT       ✅        8.6              0.6283                    3.2  312.13
+5                  CoreML       ❌        0.0                   -                      -       -
+6   TensorFlow SavedModel       ❌        0.0                   -                      -       -
+7     TensorFlow GraphDef       ❌        0.0                   -                      -       -
+8         TensorFlow Lite       ❌        0.0                   -                      -       -
+9     TensorFlow Edge TPU       ❌        0.0                   -                      -       -
+10          TensorFlow.js       ❌        0.0                   -                      -       -
+11           PaddlePaddle       ❌        0.0                   -                      -       -
+12                    MNN       ✅        5.0                0.63                  83.25   12.01
+13                   NCNN       ✅        5.1                0.63                  75.42   13.26
+14                    IMX       ❌        0.0                   -                      -       -
+15                   RKNN       ❌        0.0                   -                      -       -
