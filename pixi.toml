@@ -6,17 +6,15 @@ platforms = ["win-64"]
 version = "0.1.0"
 
 [tasks]
-run-all-evaluations = "python evaluation_tools/run_all_visualizations.py"
-run-vehicle-detection = "python evaluation_tools/visualize_vehicle_detection.py"
-run-plate-detection = "python evaluation_tools/visualize_plate_detection.py"
-run-ocr-benchmarks = "python evaluation_tools/visualize_ocr_benchmarks.py"
-run-comprehensive-tables = "python evaluation_tools/generate_comprehensive_tables.py"
-test-imports = "python -c 'import pandas, matplotlib, seaborn; print(\"All packages available\")'"
+run-ocr-evals = "python evaluation_tools/run_all_ocr_evaluations.py"
+run-all-visualizations = "python evaluation_tools/run_all_visualizations.py"
 
 [dependencies]
 python = ">=3.13.5,<3.14"
 
 [pypi-dependencies]
-pandas = ">=2.3.0, <3"
 matplotlib = ">=3.10.3, <4"
 seaborn = ">=0.13.2, <0.14"
+pandas = ">=2.3.0, <3"
+scikit-learn = ">=1.7.0, <2"
+loguru = ">=0.7.3, <0.8"

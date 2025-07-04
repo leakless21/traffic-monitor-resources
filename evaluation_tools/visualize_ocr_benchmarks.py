@@ -24,7 +24,7 @@ def parse_ocr_evaluation_report(report_path):
         'Throughput_plates_sec': throughput
     }
 
-def generate_ocr_visualizations(base_path="traffic-monitor-resources/eval_all_ocr"):
+def generate_ocr_visualizations(base_path="eval_all_ocr"):
     """
     Generates visualizations for OCR engine benchmarks.
     """

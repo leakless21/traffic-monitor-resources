@@ -63,6 +63,20 @@ MODEL_SPECS = {
         "paper": "YOLO11: An Improved Real-Time Object Detection System",
         "key_features": "C3k2 blocks, improved FPN, enhanced feature fusion",
         "training_techniques": "Advanced augmentation, improved loss functions"
+    },
+    "GhostYOLO": {
+        "parameters_millions": 2.6,
+        "gflops_640": 6.6,
+        "backbone": "CSPDarknet53 + C3Ghost",
+        "neck": "PANet + C3Ghost",
+        "head": "Decoupled Head v2",
+        "input_channels": 3,
+        "architecture_type": "Anchor-free detector",
+        "anchor_based": False,
+        "release_year": 2024,
+        "paper": "GhostYOLO: Efficient Object Detection with Ghost Convolutions",
+        "key_features": "Ghost convolutions, C3Ghost blocks, lightweight design",
+        "training_techniques": "Ghost module optimization, efficient feature extraction"
     }
 }
 

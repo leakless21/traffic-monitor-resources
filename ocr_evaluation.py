@@ -23,6 +23,7 @@ import re
 
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
 import seaborn as sns
 from sklearn.metrics import confusion_matrix, classification_report, precision_recall_fscore_support
 from sklearn.preprocessing import LabelEncoder
@@ -440,45 +441,95 @@ class OCREvaluator:
         cm_normalized = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
         cm_normalized = np.nan_to_num(cm_normalized) # Handle division by zero for rows with no true labels
 
-        # Plot confusion matrix
+        # --- Improved visualization settings ---
+        # 1. Unnormalized (count) confusion matrix ----------------------------------
         plt.figure(figsize=(12, 10))
-        
-        # Create a custom formatter function for the annotations
-        def format_func(x, pos):
-            if x == 0:
-                return ".00"
-            elif x >= 1:
-                return f"{x:.2f}"
-            else:  # 0 < x < 1
-                return f"{x:.2f}"[1:]  # Remove leading '0'
-        
-        # Use matplotlib's FuncFormatter to handle annotation formatting
-        import matplotlib.ticker as ticker
-        
-        # For seaborn heatmap, we'll use annot=True with fmt='.2g' and then manually adjust
-        # Actually, let's use a simpler approach with standard formatting
-        sns.heatmap(cm_normalized, annot=True, fmt='.2f', cmap='Blues',
-                   xticklabels=unique_chars, yticklabels=unique_chars)
-        
-        # Get the current axes and modify the text annotations
+
+        # Use a logarithmic colour scale so small non-zero counts are still visible.
+        # Mask true zeros so they stay white.
+        mask_counts = cm == 0
+        if cm.max() > 1:
+            norm_counts = mcolors.LogNorm(vmin=1, vmax=cm.max())
+        else:
+            norm_counts = None  # Fallback to linear if all counts are <=1
+
+        # Create a colormap that starts with white so zeros/background remain white
+        base_cmap = plt.cm.get_cmap('YlGnBu', 256)
+        new_colors = base_cmap(np.linspace(0.25, 1, 256))  # Skip very light shades
+        new_colors = np.vstack((np.array([1, 1, 1, 1]), new_colors))  # Prepend white
+        white_cmap_counts = mcolors.ListedColormap(new_colors)
+
+        sns.heatmap(
+            cm,
+            annot=True,
+            fmt='d',
+            cmap=white_cmap_counts,
+            norm=norm_counts,
+            mask=mask_counts,
+            linewidths=.5,
+            cbar_kws={'label': 'Count', 'shrink': 0.8},
+            annot_kws={'fontsize': 8}, # Adjust font size here
+            xticklabels=unique_chars,
+            yticklabels=unique_chars,
+            square=True
+        )
+
         ax = plt.gca()
-        for text in ax.texts:
-            current_text = text.get_text()
-            if current_text == "0.00":
-                text.set_text(".00")
-            elif current_text.startswith("0.") and len(current_text) > 2:
-                text.set_text(current_text[1:])  # Remove leading '0'
-        
-        plt.title('Character-level Confusion Matrix (Normalized by True Label)')
-        plt.xlabel('Predicted Characters')
-        plt.ylabel('True Characters')
+        ax.set_title('Character-level Confusion Matrix (Counts)')
+        ax.set_xlabel('Predicted Characters')
+        ax.set_ylabel('True Characters')
+        plt.xticks(rotation=45, ha='right')
         plt.tight_layout()
-        
-        output_path = output_dir / "confusion_matrix_characters.png"
-        plt.savefig(output_path, dpi=300, bbox_inches='tight')
+
+        output_path_unnormalized = output_dir / "confusion_matrix_characters_unnormalized.png"
+        plt.savefig(output_path_unnormalized, dpi=300, bbox_inches='tight')
         plt.close()
-        
-        logger.info(f"Confusion matrix saved to {output_path}")
+        logger.info(f"Unnormalized confusion matrix saved to {output_path_unnormalized}")
+
+        # 2. Normalized confusion matrix -------------------------------------------
+        plt.figure(figsize=(12, 10))
+
+        # Use a power-law normalisation (gamma<1) to emphasise low values but keep scale linear near the high end.
+        norm_ratio = mcolors.PowerNorm(gamma=0.4)
+        mask_norm = cm_normalized == 0
+
+        # Reuse the custom colormap for normalized heatmap
+        white_cmap_norm = white_cmap_counts
+
+        sns.heatmap(
+            cm_normalized,
+            annot=True,
+            fmt='.2f', # Reduced decimal places for better fit
+            cmap=white_cmap_norm,
+            norm=norm_ratio,
+            mask=mask_norm,
+            linewidths=.5,
+            cbar_kws={'label': 'Proportion', 'shrink': 0.8},
+            annot_kws={'fontsize': 8}, # Adjust font size here
+            xticklabels=unique_chars,
+            yticklabels=unique_chars,
+            square=True
+        )
+
+        ax = plt.gca()
+        # Improve annotation readability – remove leading 0 and hide 0.00 entirely
+        for text in ax.texts:
+            txt = text.get_text()
+            if txt == '0.00':
+                text.set_text('')
+            elif txt.startswith('0.'):
+                text.set_text(txt[1:])
+
+        ax.set_title('Character-level Confusion Matrix (Normalised)')
+        ax.set_xlabel('Predicted Characters')
+        ax.set_ylabel('True Characters')
+        plt.xticks(rotation=45, ha='right')
+        plt.tight_layout()
+
+        output_path_normalized = output_dir / "confusion_matrix_characters_normalized.png"
+        plt.savefig(output_path_normalized, dpi=300, bbox_inches='tight')
+        plt.close()
+        logger.info(f"Normalized confusion matrix saved to {output_path_normalized}")
     
     def generate_error_analysis(self, predictions: List[Dict], ground_truth: List[Dict], 
                               output_dir: Path) -> None:
@@ -818,7 +869,7 @@ Examples:
         evaluator.generate_error_analysis(predictions, ground_truth, output_dir)
         
         # Print summary
-        print(f"\n🎯 OCR EVALUATION RESULTS")
+        print(f"\n>>> OCR EVALUATION RESULTS")
         print("=" * 50)
         print(f"Character Error Rate (CER): {metrics.cer:.4f}")
         print(f"Plate-level Accuracy: {metrics.plate_accuracy:.4f}")
@@ -826,7 +877,7 @@ Examples:
         print(f"Detection Rate: {metrics.detection_rate:.4f}")
         print(f"Average Latency: {metrics.avg_latency*1000:.2f}ms")
         print(f"Throughput: {metrics.throughput:.2f} plates/sec")
-        print(f"\n📁 Detailed results saved to: {output_dir}")
+        print(f"\n>>> Detailed results saved to: {output_dir}")
         
         logger.info("Evaluation completed successfully!")
         return 0

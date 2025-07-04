@@ -1,0 +1,7 @@
+Format,description,precision,optimization_level,hardware_requirements,deployment_complexity,inference_backend
+PyTorch,Native PyTorch format,FP32,None,CPU/GPU,Easy,PyTorch
+TorchScript,TorchScript JIT compilation,FP32,JIT,CPU/GPU,Easy,PyTorch C++
+ONNX,Open Neural Network Exchange,FP32/FP16,Graph optimization,CPU/GPU/NPU,Medium,ONNXRuntime
+TensorRT,NVIDIA TensorRT optimization,FP32/FP16/INT8,High,NVIDIA GPU,Medium,TensorRT
+MNN,Mobile Neural Network,FP32/FP16/INT8,Mobile optimized,Mobile/ARM,High,MNN
+NCNN,Tencent NCNN framework,FP32/FP16/INT8,Mobile optimized,Mobile/ARM/x86,High,NCNN

@@ -1,4 +1,40 @@
 
+# Data and Logs
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# Python
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
+venv/
+.env
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# IDE-specific files
+.idea/
+.vscode/
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Specific to this project
+/Results/
+/eval_all_ocr/
+lp_all_dataset/
+
 # pixi environments
 .pixi
 *.egg-info

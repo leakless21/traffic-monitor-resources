@@ -43,12 +43,12 @@ def parse_benchmark_log(log_path):
     df = pd.DataFrame(data, columns=['Format', 'Status', 'Size_MB', 'mAP50-95', 'Latency_ms_im', 'FPS'])
     return df
 
-def generate_plate_detection_visualizations(base_path="traffic-monitor-resources/Results"):
+def generate_plate_detection_visualizations(base_path="Results"):
     """
     Generates visualizations specifically for license plate detection benchmarks.
     """
     detection_type = "License Plate"
-    models = ["YOLO11n", "YOLOv10n", "YOLOv5u", "YOLOv8n"]
+    models = ["YOLO11n", "YOLOv10n", "YOLOv5u", "YOLOv8n", "GhostYOLO"]
     
     all_data = []
 

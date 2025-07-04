@@ -55,13 +55,13 @@ def generate_comprehensive_model_table():
     
     # Load performance data for both detection tasks
     detection_types = ["License Plate", "Vehicles"]
-    models = ["YOLO11n", "YOLOv10n", "YOLOv5u", "YOLOv8n"]
+    models = ["YOLO11n", "YOLOv10n", "YOLOv5u", "YOLOv8n", "GhostYOLO"]
     
     all_performance_data = []
     
     for det_type in detection_types:
         for model in models:
-            log_path = os.path.join("traffic-monitor-resources/Results", det_type, model, "benchmarks.log")
+            log_path = os.path.join("Results", det_type, model, "benchmarks.log")
             if os.path.exists(log_path):
                 df = parse_benchmark_log(log_path)
                 if not df.empty:
@@ -151,13 +151,13 @@ def generate_export_format_analysis():
     """Generate export format performance analysis."""
     
     detection_types = ["License Plate", "Vehicles"]
-    models = ["YOLO11n", "YOLOv10n", "YOLOv5u", "YOLOv8n"]
+    models = ["YOLO11n", "YOLOv10n", "YOLOv5u", "YOLOv8n", "GhostYOLO"]
     
     format_analysis_data = []
     
     for det_type in detection_types:
         for model in models:
-            log_path = os.path.join("traffic-monitor-resources/Results", det_type, model, "benchmarks.log")
+            log_path = os.path.join("Results", det_type, model, "benchmarks.log")
             if os.path.exists(log_path):
                 df = parse_benchmark_log(log_path)
                 if not df.empty:

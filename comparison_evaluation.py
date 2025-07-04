@@ -133,7 +133,7 @@ def generate_comparison_plots(results: Dict[str, EvaluationMetrics], output_dir:
     plt.savefig(output_path, dpi=300, bbox_inches='tight')
     plt.close()
     
-    print(f"📊 Comparison plots saved to {output_path}")
+    print(f">>> Comparison plots saved to {output_path}")
 
 
 def save_comparison_report(results: Dict[str, EvaluationMetrics], output_dir: Path):
@@ -182,7 +182,7 @@ def save_comparison_report(results: Dict[str, EvaluationMetrics], output_dir: Pa
         f.write(f"Best Speed: {best_speed[0]} ({best_speed[1].throughput:.0f} plates/sec)\n")
         f.write(f"Lowest CER: {best_cer[0]} ({best_cer[1].cer:.3f})\n")
     
-    print(f"📄 Comparison report saved to {report_path}")
+    print(f">>> Comparison report saved to {report_path}")
 
 
 def main():
@@ -255,7 +255,7 @@ Examples:
     output_dir.mkdir(parents=True, exist_ok=True)
     
     try:
-        print("🚀 Starting OCR Engine Comparison")
+        print(">>> Starting OCR Engine Comparison")
         print("=" * 50)
         
         # Compare engines
@@ -267,7 +267,7 @@ Examples:
         )
         
         if not results:
-            print("❌ No valid results obtained")
+            print("ERROR: No valid results obtained")
             return 1
         
         # Generate outputs
@@ -275,19 +275,19 @@ Examples:
         generate_comparison_plots(results, output_dir)
         
         # Print summary
-        print(f"\n🎯 COMPARISON SUMMARY")
+        print(f"\n>>> COMPARISON SUMMARY")
         print("=" * 40)
         
         for engine, metrics in results.items():
             print(f"{engine:.<20} Acc:{metrics.plate_accuracy:.3f} CER:{metrics.cer:.3f} "
                   f"Speed:{metrics.throughput:.0f}pps")
         
-        print(f"\n📁 Results saved to: {output_dir}")
+        print(f"\n>>> Results saved to: {output_dir}")
         
         return 0
         
     except Exception as e:
-        print(f"❌ Comparison failed: {e}")
+        print(f"ERROR: Comparison failed: {e}")
         return 1
 
 

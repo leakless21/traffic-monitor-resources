@@ -22,3 +22,5 @@ if %errorlevel% equ 0 (
 :: Restore original PATH
 set PATH=%ORIGINAL_PATH%
 pause 
+
+$clean = ($env:Path -split ';' | Select-Object -Unique) -join ';' [Environment]::SetEnvironmentVariable('Path',$clean,'User')
