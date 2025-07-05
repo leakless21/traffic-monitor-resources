@@ -27,7 +27,8 @@ def run_ocr_evaluation(predictions_file: Path, output_base_dir: Path, output_sub
         "--predictions", str(predictions_file),
         "--ground_truth", str(GROUND_TRUTH_FILE),
         "--output_dir", str(output_dir),
-        "--max_confusion_classes", "50" # You can adjust this value if needed
+        "--max_confusion_classes", "100",  # Increased to show more characters
+        "--no_normalize"  # Preserve distinction between O/0, I/1, S/5
     ]
 
     try:

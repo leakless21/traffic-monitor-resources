@@ -1,0 +1,37 @@
+OCR EVALUATION REPORT
+==================================================
+
+SUMMARY METRICS
+--------------------
+Character Error Rate (CER)....     0.0329
+Plate-level Accuracy..........     0.8392
+Plate-level Precision.........     0.8392
+Plate-level Recall............     0.8392
+Plate-level F1 Score..........     0.8392
+Detection Rate................     1.0000
+False Positive Rate...........     0.0000
+False Negative Rate...........     0.0000
+
+PERFORMANCE METRICS
+--------------------
+Average Latency (ms)..........      13.29
+Median Latency (ms)...........      12.00
+Min Latency (ms)..............       9.60
+Max Latency (ms)..............     406.50
+Throughput (plates/sec).......      75.23
+
+DATASET STATISTICS
+--------------------
+Total Samples.................       1636
+Detected Samples..............       1636
+Correct Detections............       1373
+False Positives...............          0
+False Negatives...............          0
+
+CHARACTER-LEVEL ANALYSIS
+--------------------
+Total Characters..............      13103
+Correct Characters............      12678
+Insertion Errors..............         63
+Deletion Errors...............         20
+Substitution Errors...........        342

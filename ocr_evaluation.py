@@ -167,6 +167,71 @@ class OCREvaluator:
         
         return cer, error_counts
     
+    def get_character_alignments(self, predicted: str, ground_truth: str) -> List[Tuple[Optional[str], Optional[str]]]:
+        """
+        Get character alignments using edit distance algorithm.
+        
+        Returns:
+            List of (predicted_char, ground_truth_char) tuples.
+            None values indicate insertions or deletions.
+        """
+        pred = self.normalize_plate_text(predicted)
+        gt = self.normalize_plate_text(ground_truth)
+        
+        if len(gt) == 0:
+            return [(char, None) for char in pred]
+        if len(pred) == 0:
+            return [(None, char) for char in gt]
+        
+        # Dynamic programming for edit distance
+        dp = np.zeros((len(pred) + 1, len(gt) + 1), dtype=int)
+        
+        # Initialize base cases
+        for i in range(len(pred) + 1):
+            dp[i][0] = i
+        for j in range(len(gt) + 1):
+            dp[0][j] = j
+        
+        # Fill the DP table
+        for i in range(1, len(pred) + 1):
+            for j in range(1, len(gt) + 1):
+                if pred[i-1] == gt[j-1]:
+                    dp[i][j] = dp[i-1][j-1]
+                else:
+                    dp[i][j] = 1 + min(
+                        dp[i-1][j],    # deletion
+                        dp[i][j-1],    # insertion
+                        dp[i-1][j-1]   # substitution
+                    )
+        
+        # Traceback to get alignments
+        alignments = []
+        i, j = len(pred), len(gt)
+        
+        while i > 0 or j > 0:
+            if i > 0 and j > 0 and pred[i-1] == gt[j-1]:
+                # Match
+                alignments.append((pred[i-1], gt[j-1]))
+                i -= 1
+                j -= 1
+            elif i > 0 and j > 0 and dp[i][j] == dp[i-1][j-1] + 1:
+                # Substitution
+                alignments.append((pred[i-1], gt[j-1]))
+                i -= 1
+                j -= 1
+            elif i > 0 and dp[i][j] == dp[i-1][j] + 1:
+                # Deletion (character in predicted but not in ground truth)
+                alignments.append((pred[i-1], None))
+                i -= 1
+            elif j > 0 and dp[i][j] == dp[i][j-1] + 1:
+                # Insertion (character in ground truth but not in predicted)
+                alignments.append((None, gt[j-1]))
+                j -= 1
+        
+        # Reverse because we built it backwards
+        alignments.reverse()
+        return alignments
+    
     def is_exact_match(self, predicted: str, ground_truth: str) -> bool:
         """Check if prediction exactly matches ground truth."""
         return self.normalize_plate_text(predicted) == self.normalize_plate_text(ground_truth)
@@ -400,47 +465,47 @@ class OCREvaluator:
         """Generate confusion matrix for character-level analysis."""
         aligned_pairs = self.align_datasets(predictions, ground_truth)
         
-        # Collect all characters
+        # Collect character substitutions using proper alignment
         pred_chars = []
         gt_chars = []
         
         for pred_item, gt_item in aligned_pairs:
-            pred_text = self.normalize_plate_text(pred_item.get("plate_text", ""))
-            gt_text = self.normalize_plate_text(gt_item.get("plate_text", ""))
+            pred_text = pred_item.get("plate_text", "")
+            gt_text = gt_item.get("plate_text", "")
             
-            # Align characters (simple approach - pad shorter string)
-            max_len = max(len(pred_text), len(gt_text))
-            pred_padded = pred_text.ljust(max_len, ' ')
-            gt_padded = gt_text.ljust(max_len, ' ')
+            # Get character alignments using edit distance
+            alignments = self.get_character_alignments(pred_text, gt_text)
             
-            pred_chars.extend(list(pred_padded))
-            gt_chars.extend(list(gt_padded))
+            # Only include substitutions and matches (not insertions/deletions)
+            for pred_char, gt_char in alignments:
+                if pred_char is not None and gt_char is not None:
+                    pred_chars.append(pred_char)
+                    gt_chars.append(gt_char)
+        
+        if not gt_chars:
+            logger.warning("No character alignments found for confusion matrix")
+            return
         
         # Get unique characters and limit to most common
-        # Exclude padding spaces from consideration when counting most common characters
-        char_counts = Counter([ch for ch in gt_chars if ch != ' '])
-        all_chars = set(pred_chars + gt_chars) - {' '}  # Remove space from overall set
+        char_counts = Counter(gt_chars)
+        all_chars = set(pred_chars + gt_chars)
         most_common_chars = [char for char, _ in char_counts.most_common(max_classes)]
         
         # Filter to most common characters
         filtered_pred = []
         filtered_gt = []
         for p, g in zip(pred_chars, gt_chars):
-            # Skip padded space rows/columns entirely
-            if g == ' ':
-                continue
             if g in most_common_chars:
-                # Only add 'OTHER' if prediction is not in common chars AND is not empty/space
                 if p in most_common_chars:
                     filtered_pred.append(p)
-                elif p.strip():
-                    filtered_pred.append('OTHER')
+                    filtered_gt.append(g)
                 else:
-                    filtered_pred.append(p)  # Keep spaces/empty as-is
-                filtered_gt.append(g)
+                    # Skip unusual predicted characters instead of grouping as 'OTHER'
+                    # This prevents cluttering the confusion matrix with rare OCR artifacts
+                    continue
         
         if not filtered_gt:
-            logger.warning("No characters found for confusion matrix")
+            logger.warning("No characters found for confusion matrix after filtering")
             return
         
         # Create confusion matrix
@@ -462,8 +527,8 @@ class OCREvaluator:
         # ------------------------------------------------------------------
         # Plotting setup – mirror Ultralytics best-practice aesthetics
         # ------------------------------------------------------------------
-        # Annotation can clutter large matrices, so disable when >30 classes
-        annot_cells = nc <= 30 # Use the (potentially downsampled) nc for annotation decision
+        # Always show annotations for non-zero values, but adjust font size based on matrix size
+        annot_cells = True  # Always show annotations, we'll handle zero hiding separately
 
         # Apply a clean seaborn style
         sns.set(style="white", font_scale=0.8) # Keep original font_scale for general style
@@ -472,6 +537,7 @@ class OCREvaluator:
         tick_fontsize = max(6, 15 - 0.1 * nc)
         label_fontsize = max(6, 12 - 0.1 * nc)
         title_fontsize = max(6, 12 - 0.1 * nc)
+        annot_fontsize = max(4, 8 - 0.05 * nc)  # Dynamic annotation font size
         bottom_margin = max(0.1, 0.25 - 0.001 * nc) # dynamic bottom margin for x-axis labels
 
         # Normalize confusion matrix for better visualization of proportions (column-wise normalization)
@@ -535,10 +601,10 @@ class OCREvaluator:
         # The logic for ticks_list_unnorm is already handled above based on norm_counts
         # We will use cbar_kws for setting the ticks and then update_ticks()
         
-        # Plot unnormalized heatmap
+        # Plot unnormalized heatmap - always show annotations for non-zero values
         sns.heatmap(
             cm,
-            annot=annot_cells,
+            annot=True,  # Always show annotations
             fmt='d',
             cmap=white_cmap_counts,
             norm=norm_counts,
@@ -546,7 +612,7 @@ class OCREvaluator:
             linewidths=.5,
             linecolor='lightgrey',
             cbar_kws={'label': 'Count', 'shrink': 0.8, 'pad': 0.02, 'ticks': cbar_ticks_unnorm},
-            annot_kws={'fontsize': 7},
+            annot_kws={'fontsize': annot_fontsize},
             xticklabels=unique_chars_downsampled,
             yticklabels=unique_chars_downsampled,
             square=True,
@@ -565,6 +631,11 @@ class OCREvaluator:
             ax.spines[s].set_visible(False)
         for s in ['left', 'right', 'top', 'bottom']:
              cbar.ax.spines[s].set_visible(False) # Hide colorbar spines
+
+        # Hide zero annotations while keeping non-zero values visible
+        for text in ax.texts:
+            if text.get_text() == '0':
+                text.set_text('')
 
         # Force all tick labels to be displayed
         centers = np.arange(len(unique_chars_downsampled)) + 0.5
@@ -608,7 +679,7 @@ class OCREvaluator:
 
         sns.heatmap(
             cm_normalized,
-            annot=annot_cells,
+            annot=True,  # Always show annotations
             fmt='.2f',
             cmap=white_cmap_norm,
             norm=norm_ratio,
@@ -616,7 +687,7 @@ class OCREvaluator:
             linewidths=.5,
             linecolor='lightgrey',
             cbar_kws=norm_cbar_kws,
-            annot_kws={'fontsize': 7},
+            annot_kws={'fontsize': annot_fontsize},
             xticklabels=unique_chars_downsampled,
             yticklabels=unique_chars_downsampled,
             square=True,
@@ -655,7 +726,7 @@ class OCREvaluator:
                 txt = txt[1:]
             # Dynamically adjust text colour for readability
             try:
-                val = float(txt)
+                val = float(txt if not txt.startswith('.') else '0' + txt)
             except ValueError:
                 val = 0.0 # Default if conversion fails
             text.set_color('white' if val > color_threshold_norm else 'black')

@@ -1,0 +1,47 @@
+{
+  "summary": {
+    "Character Error Rate (CER)": "0.0364",
+    "Plate-level Accuracy": "0.8226",
+    "Plate-level Precision": "0.8226",
+    "Plate-level Recall": "0.8226",
+    "Plate-level F1 Score": "0.8226",
+    "Detection Rate": "1.0000",
+    "False Positive Rate": "0.0000",
+    "False Negative Rate": "0.0000"
+  },
+  "performance": {
+    "Average Latency (ms)": "16.69",
+    "Median Latency (ms)": "16.50",
+    "Min Latency (ms)": "16.40",
+    "Max Latency (ms)": "25.50",
+    "Throughput (plates/sec)": "59.90"
+  },
+  "detailed_metrics": {
+    "cer": 0.036359247088666016,
+    "char_precision": 0.9636404868092826,
+    "char_recall": 0.9636404868092826,
+    "char_f1": 0.9636404868092826,
+    "plate_accuracy": 0.822639225181598,
+    "plate_precision": 0.822639225181598,
+    "plate_recall": 0.822639225181598,
+    "plate_f1": 0.822639225181598,
+    "detection_rate": 1.0,
+    "false_positive_rate": 0.0,
+    "false_negative_rate": 0.0,
+    "avg_latency": 0.016693462469733657,
+    "median_latency": 0.0165,
+    "min_latency": 0.0164,
+    "max_latency": 0.0255,
+    "throughput": 59.90368995126479,
+    "total_samples": 1652,
+    "detected_samples": 1652,
+    "correct_detections": 1359,
+    "false_positives": 0,
+    "false_negatives": 0,
+    "total_characters": 13229,
+    "correct_characters": 12748,
+    "insertion_errors": 54,
+    "deletion_errors": 14,
+    "substitution_errors": 413
+  }
+}

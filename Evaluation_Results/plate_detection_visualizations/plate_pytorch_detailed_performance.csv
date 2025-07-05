@@ -1,5 +1,0 @@
-Model,Parameters_M,GFLOPs,Size_MB,mAP50-95,Latency_ms_im,FPS,FPS_per_GFLOP,mAP_per_GFLOP,Efficiency_Score,Architecture,Backbone,Anchor_Based
-YOLO11n,2.6,6.5,5.2,0.722,13.09,76.39,11.752,0.111,3.262,Anchor-free detector,CSPDarknet53 + C3k2,False
-YOLOv10n,2.3,6.7,5.5,0.72,13.78,72.59,10.834,0.107,3.39,NMS-free detector,CSPDarknet53 + C2fCIB,False
-YOLOv5u,7.0,15.8,5.1,0.712,11.12,89.89,5.689,0.045,0.579,One-stage detector,CSPDarknet53,True
-YOLOv8n,3.2,8.7,6.0,0.718,10.51,95.12,10.933,0.083,2.454,Anchor-free detector,CSPDarknet53 + C2f,False

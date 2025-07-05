@@ -1,5 +1,0 @@
-Hardware,fp32_tflops,fp16_tflops,tensor_tflops,memory_gb,memory_bandwidth_gbps,cuda_cores,cores
-RTX_3060,13.0,26.0,51.0,12,360.0,3584.0,
-RTX_4090,33.0,66.0,165.0,24,1008.0,16384.0,
-Jetson_Orin,1.7,3.4,27.0,8,102.0,1024.0,
-CPU_i7_12700,0.4,0.8,0.0,32,51.2,,12.0

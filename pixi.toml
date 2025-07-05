@@ -8,6 +8,7 @@ version = "0.1.0"
 [tasks]
 run-ocr-evals = "python evaluation_tools/run_all_ocr_evaluations.py"
 run-all-visual = "F:/hok/DATN/Project/traffic-monitor-resources/.pixi/envs/default/python.exe F:/hok/DATN/Project/traffic-monitor-resources/evaluation_tools/run_all_visualizations.py"
+dataset-summary = "python generate_dataset_summary.py --ground_truth lp_all_dataset/all_anotaciones.csv --output_dir dataset_summary"
 
 [dependencies]
 python = ">=3.13.5,<3.14"
