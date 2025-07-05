@@ -417,16 +417,26 @@ class OCREvaluator:
             gt_chars.extend(list(gt_padded))
         
         # Get unique characters and limit to most common
-        all_chars = set(pred_chars + gt_chars)
-        char_counts = Counter(gt_chars)
+        # Exclude padding spaces from consideration when counting most common characters
+        char_counts = Counter([ch for ch in gt_chars if ch != ' '])
+        all_chars = set(pred_chars + gt_chars) - {' '}  # Remove space from overall set
         most_common_chars = [char for char, _ in char_counts.most_common(max_classes)]
         
         # Filter to most common characters
         filtered_pred = []
         filtered_gt = []
         for p, g in zip(pred_chars, gt_chars):
+            # Skip padded space rows/columns entirely
+            if g == ' ':
+                continue
             if g in most_common_chars:
-                filtered_pred.append(p if p in most_common_chars else 'OTHER')
+                # Only add 'OTHER' if prediction is not in common chars AND is not empty/space
+                if p in most_common_chars:
+                    filtered_pred.append(p)
+                elif p.strip():
+                    filtered_pred.append('OTHER')
+                else:
+                    filtered_pred.append(p)  # Keep spaces/empty as-is
                 filtered_gt.append(g)
         
         if not filtered_gt:
@@ -434,102 +444,240 @@ class OCREvaluator:
             return
         
         # Create confusion matrix
-        unique_chars = sorted(set(filtered_gt + filtered_pred))
+        unique_chars = sorted(ch for ch in set(filtered_gt + filtered_pred) if ch not in {'', ' '})
         cm = confusion_matrix(filtered_gt, filtered_pred, labels=unique_chars)
-        
-        # Normalize confusion matrix for better visualization of proportions
-        cm_normalized = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
-        cm_normalized = np.nan_to_num(cm_normalized) # Handle division by zero for rows with no true labels
+
+        # Downsample for large class count if needed (Ultralytics logic)
+        nc = len(unique_chars)
+        if nc >= 100:
+            k = max(2, nc // 60)  # step size for downsampling
+            keep_idx = slice(None, None, k)  # create slice instead of array
+            unique_chars_downsampled = [unique_chars[i] for i in range(0, nc, k)]
+            cm = cm[keep_idx, :][:, keep_idx]
+            nc = len(unique_chars_downsampled) # Update nc to the new number of classes
+        else:
+            unique_chars_downsampled = unique_chars
+
+
+        # ------------------------------------------------------------------
+        # Plotting setup – mirror Ultralytics best-practice aesthetics
+        # ------------------------------------------------------------------
+        # Annotation can clutter large matrices, so disable when >30 classes
+        annot_cells = nc <= 30 # Use the (potentially downsampled) nc for annotation decision
+
+        # Apply a clean seaborn style
+        sns.set(style="white", font_scale=0.8) # Keep original font_scale for general style
+
+        # Dynamic font sizes and margins
+        tick_fontsize = max(6, 15 - 0.1 * nc)
+        label_fontsize = max(6, 12 - 0.1 * nc)
+        title_fontsize = max(6, 12 - 0.1 * nc)
+        bottom_margin = max(0.1, 0.25 - 0.001 * nc) # dynamic bottom margin for x-axis labels
+
+        # Normalize confusion matrix for better visualization of proportions (column-wise normalization)
+        col_sum_normalized = cm.sum(axis=0, keepdims=True)
+        cm_normalized = cm.astype('float') / np.where(col_sum_normalized == 0, 1, col_sum_normalized)
+        cm_normalized = np.nan_to_num(cm_normalized)  # Handle division by zero for columns with no true labels
+        cm_normalized[cm_normalized < 0.005] = np.nan # Hide very small values for cleaner annotation
 
         # --- Improved visualization settings ---
         # 1. Unnormalized (count) confusion matrix ----------------------------------
-        plt.figure(figsize=(12, 10))
+        fig, ax = plt.subplots(figsize=(12, 10)) # Use fig, ax = plt.subplots() for more control
 
         # Use a logarithmic colour scale so small non-zero counts are still visible.
         # Mask true zeros so they stay white.
         mask_counts = cm == 0
         if cm.max() > 1:
             norm_counts = mcolors.LogNorm(vmin=1, vmax=cm.max())
+            # For log scale, create nice tick values
+            vmin_log, vmax_log = 1, cm.max()
+            ticks = [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000]
+            ticks = [t for t in ticks if vmin_log <= t <= vmax_log]
+            if not ticks: # Fallback if no ticks within range
+                ticks = [vmin_log, vmax_log]
+            cbar_ticks_unnorm = ticks
         else:
             norm_counts = None  # Fallback to linear if all counts are <=1
 
+            # If linear, ensure min and max are explicitly set for ticks, and add dynamic ticks for intermediate values
+            # Ensure at least 2 ticks (min, max) and up to 5 evenly spaced for richer display
+            if cm.max() > 0:
+                # Generate ticks as integers, ensuring min and max are always included
+                min_val = int(cm.min())
+                max_val = int(cm.max())
+                if min_val == max_val:
+                    cbar_ticks_unnorm = [min_val]
+                else:
+                    # Generate up to 5 intermediate ticks, ensuring they are integers and unique
+                    num_intermediate_ticks = min(3, max_val - min_val - 1) # At most 3 intermediate ticks for better spacing
+                    if num_intermediate_ticks > 0:
+                        intermediate_ticks = np.linspace(min_val, max_val, num_intermediate_ticks + 2)
+                        # Convert to integers, remove duplicates and sort, ensuring min/max are present
+                        intermediate_ticks = sorted(list(set([int(t) for t in intermediate_ticks])))
+                        cbar_ticks_unnorm = [t for t in intermediate_ticks if min_val <= t <= max_val]
+                    else:
+                        cbar_ticks_unnorm = [min_val, max_val] # Only min and max if no space for intermediate
+
+                # Ensure 0 is included if it's the minimum value
+                if min_val == 0 and 0 not in cbar_ticks_unnorm:
+                    cbar_ticks_unnorm.insert(0, 0)
+            else:
+                cbar_ticks_unnorm = [0] # If all zeros
+
         # Create a colormap that starts with white so zeros/background remain white
-        base_cmap = plt.cm.get_cmap('YlGnBu', 256)
+        # Use "Blues" colormap, following Ultralytics best practices for confusion matrices
+        base_cmap = plt.colormaps.get_cmap('Blues').resampled(256)
         new_colors = base_cmap(np.linspace(0.25, 1, 256))  # Skip very light shades
         new_colors = np.vstack((np.array([1, 1, 1, 1]), new_colors))  # Prepend white
         white_cmap_counts = mcolors.ListedColormap(new_colors)
 
+        # Custom colorbar formatting for regular numbers instead of scientific notation
+        # The logic for ticks_list_unnorm is already handled above based on norm_counts
+        # We will use cbar_kws for setting the ticks and then update_ticks()
+        
+        # Plot unnormalized heatmap
         sns.heatmap(
             cm,
-            annot=True,
+            annot=annot_cells,
             fmt='d',
             cmap=white_cmap_counts,
             norm=norm_counts,
             mask=mask_counts,
             linewidths=.5,
-            cbar_kws={'label': 'Count', 'shrink': 0.8},
-            annot_kws={'fontsize': 8}, # Adjust font size here
-            xticklabels=unique_chars,
-            yticklabels=unique_chars,
-            square=True
+            linecolor='lightgrey',
+            cbar_kws={'label': 'Count', 'shrink': 0.8, 'pad': 0.02, 'ticks': cbar_ticks_unnorm},
+            annot_kws={'fontsize': 7},
+            xticklabels=unique_chars_downsampled,
+            yticklabels=unique_chars_downsampled,
+            square=True,
+            ax=ax # Pass the axes explicitly
         )
 
-        ax = plt.gca()
-        ax.set_title('Character-level Confusion Matrix (Counts)')
-        ax.set_xlabel('Predicted Characters')
-        ax.set_ylabel('True Characters')
-        plt.xticks(rotation=45, ha='right')
-        plt.tight_layout()
+        cbar = ax.collections[0].colorbar
+
+        cbar.ax.tick_params(labelsize=tick_fontsize, pad=5)  # Smaller font for ticks, increased pad
+        cbar.ax.yaxis.set_ticks_position('right')  # Ensure ticks are on the right
+        cbar.ax.yaxis.set_label_position('right')  # Ensure label is on the right
+        cbar.update_ticks()  # Force update of ticks and labels
+        
+        # Hide all spines
+        for s in ['left', 'right', 'top', 'bottom']:
+            ax.spines[s].set_visible(False)
+        for s in ['left', 'right', 'top', 'bottom']:
+             cbar.ax.spines[s].set_visible(False) # Hide colorbar spines
+
+        # Force all tick labels to be displayed
+        centers = np.arange(len(unique_chars_downsampled)) + 0.5
+        ax.set_xticks(centers)
+        ax.set_xticklabels(unique_chars_downsampled, rotation=45, ha='right', fontsize=tick_fontsize)
+        ax.set_yticks(centers)
+        ax.set_yticklabels(unique_chars_downsampled, rotation=0, ha='right', fontsize=tick_fontsize)
+
+        ax.set_title('Character-level Confusion Matrix (Counts)', fontsize=title_fontsize, pad=20)
+        ax.set_xlabel('Predicted Characters', fontsize=label_fontsize, labelpad=10)
+        ax.set_ylabel('True Characters', fontsize=label_fontsize, labelpad=10)
+        ax.tick_params(axis="x", bottom=True, top=False, labelbottom=True, labeltop=False, labelsize=tick_fontsize)
+        ax.tick_params(axis="y", left=True, right=False, labelleft=True, labelright=False, labelsize=tick_fontsize)
+
+        # Move tight_layout here to ensure it accounts for colorbar adjustments
+        fig.subplots_adjust(left=0, right=0.84, top=0.94, bottom=bottom_margin) # Adjust layout to ensure equal margins
 
         output_path_unnormalized = output_dir / "confusion_matrix_characters_unnormalized.png"
         plt.savefig(output_path_unnormalized, dpi=300, bbox_inches='tight')
-        plt.close()
-        logger.info(f"Unnormalized confusion matrix saved to {output_path_unnormalized}")
+        plt.close(fig) # Close the specific figure
 
         # 2. Normalized confusion matrix -------------------------------------------
-        plt.figure(figsize=(12, 10))
+        fig_norm, ax_norm = plt.subplots(figsize=(12, 10)) # New figure and axes for normalized
 
         # Use a power-law normalisation (gamma<1) to emphasise low values but keep scale linear near the high end.
-        norm_ratio = mcolors.PowerNorm(gamma=0.4)
-        mask_norm = cm_normalized == 0
+        norm_ratio = mcolors.PowerNorm(gamma=0.4, vmin=0.0, vmax=1.0)
+        mask_norm = np.isnan(cm_normalized) # Mask NaN values that were set to hide 0.00 entries
 
         # Reuse the custom colormap for normalized heatmap
         white_cmap_norm = white_cmap_counts
 
+        # Custom ticks for normalized matrix
+        # Ensure 0.0 and 1.0 are always included in ticks and well-distributed
+        norm_ticks = sorted(list(set([norm_ratio.vmin, 0.2, 0.4, 0.6, 0.8, norm_ratio.vmax])))
+        # Ensure 0.0 and 1.0 are always included in ticks if they aren't already
+        if 0.0 not in norm_ticks: norm_ticks.insert(0, 0.0)
+        if 1.0 not in norm_ticks: norm_ticks.append(1.0)
+        norm_ticks = sorted(list(set(norm_ticks))) # Remove duplicates and sort
+
+        norm_cbar_kws = {'label': 'Proportion', 'shrink': 0.8, 'pad': 0.04, 'ticks': norm_ticks} # Increased pad
+
         sns.heatmap(
             cm_normalized,
-            annot=True,
-            fmt='.2f', # Reduced decimal places for better fit
+            annot=annot_cells,
+            fmt='.2f',
             cmap=white_cmap_norm,
             norm=norm_ratio,
             mask=mask_norm,
             linewidths=.5,
-            cbar_kws={'label': 'Proportion', 'shrink': 0.8},
-            annot_kws={'fontsize': 8}, # Adjust font size here
-            xticklabels=unique_chars,
-            yticklabels=unique_chars,
-            square=True
+            linecolor='lightgrey',
+            cbar_kws=norm_cbar_kws,
+            annot_kws={'fontsize': 7},
+            xticklabels=unique_chars_downsampled,
+            yticklabels=unique_chars_downsampled,
+            square=True,
+            ax=ax_norm # Pass the axes explicitly
         )
 
-        ax = plt.gca()
-        # Improve annotation readability – remove leading 0 and hide 0.00 entirely
-        for text in ax.texts:
-            txt = text.get_text()
-            if txt == '0.00':
-                text.set_text('')
-            elif txt.startswith('0.'):
-                text.set_text(txt[1:])
+        cbar_norm = ax_norm.collections[0].colorbar # Get the colorbar for the normalized plot
 
-        ax.set_title('Character-level Confusion Matrix (Normalised)')
-        ax.set_xlabel('Predicted Characters')
-        ax.set_ylabel('True Characters')
-        plt.xticks(rotation=45, ha='right')
-        plt.tight_layout()
+        # Removed redundant explicit tick setting, rely on cbar_kws for ticks
+        # Ensure the colorbar displays the full range from vmin to vmax
+        ax_norm.collections[0].set_clim(norm_ratio.vmin, norm_ratio.vmax)
+
+        cbar_norm.ax.tick_params(labelsize=tick_fontsize, pad=5)  # Smaller font for ticks, increased pad
+        cbar_norm.ax.yaxis.set_ticks_position('right')  # Ensure ticks are on the right
+        cbar_norm.ax.yaxis.set_label_position('right')  # Ensure label is on the right
+        cbar_norm.update_ticks()  # Force update of ticks and labels
+        
+        # Hide all spines
+        for s in ['left', 'right', 'top', 'bottom']:
+            ax_norm.spines[s].set_visible(False)
+        for s in ['left', 'right', 'top', 'bottom']:
+             cbar_norm.ax.spines[s].set_visible(False) # Hide colorbar spines
+
+        # Improve annotation readability – remove leading 0 and hide 0.00 entirely
+        # Ultralytics uses 0.45 threshold relative to max_val (1.0 for normalized)
+        color_threshold_norm = 0.45 * 1.0 # For normalized matrix, max value is 1.0
+        for text in ax_norm.texts: # Iterate over texts on ax_norm
+            txt = text.get_text()
+            # Hide zeros and very small values that were set to NaN and thus not annotated by sns.heatmap
+            if txt in ('0.00', '0', ''): # sns.heatmap handles NaNs by not annotating. This is for explicit 0.00
+                text.set_text('')
+                continue
+            # Remove leading zero for compactness
+            if txt.startswith('0.'):
+                text.set_text(txt[1:])
+                txt = txt[1:]
+            # Dynamically adjust text colour for readability
+            try:
+                val = float(txt)
+            except ValueError:
+                val = 0.0 # Default if conversion fails
+            text.set_color('white' if val > color_threshold_norm else 'black')
+
+        # Force all tick labels to be displayed
+        centers_norm = np.arange(len(unique_chars_downsampled)) + 0.5
+        ax_norm.set_xticks(centers_norm)
+        ax_norm.set_xticklabels(unique_chars_downsampled, rotation=45, ha='right', fontsize=tick_fontsize)
+        ax_norm.set_yticks(centers_norm)
+        ax_norm.set_yticklabels(unique_chars_downsampled, rotation=0, ha='right', fontsize=tick_fontsize)
+
+        ax_norm.set_title('Character-level Confusion Matrix (Normalised)', fontsize=title_fontsize, pad=20)
+        ax_norm.set_xlabel('Predicted Characters', fontsize=label_fontsize, labelpad=10)
+        ax_norm.set_ylabel('True Characters', fontsize=label_fontsize, labelpad=10)
+        ax_norm.tick_params(axis="x", bottom=True, top=False, labelbottom=True, labeltop=False, labelsize=tick_fontsize)
+        ax_norm.tick_params(axis="y", left=True, right=False, labelleft=True, labelright=False, labelsize=tick_fontsize)
+
+        plt.tight_layout() # Removed fig.subplots_adjust here to allow bbox_inches='tight'
 
         output_path_normalized = output_dir / "confusion_matrix_characters_normalized.png"
         plt.savefig(output_path_normalized, dpi=300, bbox_inches='tight')
-        plt.close()
-        logger.info(f"Normalized confusion matrix saved to {output_path_normalized}")
+        plt.close(fig_norm) # Close the specific figure
     
     def generate_error_analysis(self, predictions: List[Dict], ground_truth: List[Dict], 
                               output_dir: Path) -> None:

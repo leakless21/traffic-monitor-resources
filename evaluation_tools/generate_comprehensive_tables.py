@@ -205,15 +205,21 @@ def generate_ocr_comparison_table():
     
     ocr_data = []
     
-    # Load OCR evaluation reports
+    # Load OCR evaluation reports – support both top-level and nested paths
     engines = [
-        ("Fast-Plate-OCR", "traffic-monitor-resources/eval_all_ocr/fpo/evaluation_report.json"),
-        ("PPOCRv5", "traffic-monitor-resources/eval_all_ocr/paddle/evaluation_report.json")
+        ("Fast-Plate-OCR", os.path.join("eval_all_ocr", "fpo", "evaluation_report.json")),
+        ("PPOCRv5",      os.path.join("eval_all_ocr", "paddle", "evaluation_report.json")),
     ]
-    
+    # Also consider the nested traffic-monitor-resources/… variant if the first path is missing
+    nested_prefix = os.path.join("traffic-monitor-resources")
+ 
     for engine_name, report_path in engines:
-        if os.path.exists(report_path):
-            with open(report_path, 'r') as f:
+        candidate_path = report_path
+        if not os.path.exists(candidate_path):
+            # Try nested path
+            candidate_path = os.path.join(nested_prefix, report_path)
+        if os.path.exists(candidate_path):
+            with open(candidate_path, 'r') as f:
                 data = json.load(f)
             
             summary = data.get('summary', {})

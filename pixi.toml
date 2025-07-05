@@ -7,7 +7,7 @@ version = "0.1.0"
 
 [tasks]
 run-ocr-evals = "python evaluation_tools/run_all_ocr_evaluations.py"
-run-all-visualizations = "python evaluation_tools/run_all_visualizations.py"
+run-all-visual = "F:/hok/DATN/Project/traffic-monitor-resources/.pixi/envs/default/python.exe F:/hok/DATN/Project/traffic-monitor-resources/evaluation_tools/run_all_visualizations.py"
 
 [dependencies]
 python = ">=3.13.5,<3.14"
